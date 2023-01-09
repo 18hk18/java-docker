@@ -1,5 +1,8 @@
 pipeline {
     agent any
+     tools { 
+        maven 'maven'
+    }
     stages 
     {
         stage ('checkout') {
@@ -8,12 +11,10 @@ pipeline {
             }
         }
        
-        stage ('Build docker image') {
+        stage ('Build') {
             steps {
                 script {
-                dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                //dockerImage = docker.build registry + ":$BUILD_NUMBER"
-
+                sh 'mvn -Dmaven.test.failure.ignore=true install'
                 }
             }
         }
